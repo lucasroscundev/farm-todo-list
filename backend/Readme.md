@@ -70,3 +70,9 @@ Mongodb operations such as find, find one and update, and delete are used.
 There is a data transformation, with the conversion between mongodb documents and pydantic models for type safety.
 All methods accept a session parameter for transaction support. (Not implemented yet, but this signals at a security feature. Think about authorization and authentication)
 
+## The server.py file
+Imports apart, as you can see in the file itsefl, we begin the file defining some variables, such as collection name, database URI(mongodb location, pulled from .env file) and debug.
+As a second step, we implement a function to manage the lifecycle for our application, so it does not stay on indefinitely.
+The third part is the creation of the FastAPI application using lifespan function defined earlier and using the debug defined at the very beginning.
+A fourth section is the creation of the routes(or API endpoints) and their response structures. In this section, we use the classes and functions created at our dal.py file, as if it were our domain. GET, POST, PATCH, DELETE. We've implemented a dummy endpoint for testing. Our main function at the end runs the FastAPI function using uvicorn. FastAPI parses JSON into pydantic models(e.g. NewItem) and automatically creates Swagger documentation for the API.
+
