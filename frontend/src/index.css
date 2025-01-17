@@ -5,6 +5,7 @@ html, body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 12pt;
 }
 
 input, button {
@@ -17,9 +18,9 @@ code {
 }
 
 .box {
-  border: 1px solid lightray;
-  padding: 1em;
-  margin: 1em;
+    border: 1px solid lightgray;
+    padding: 1em;
+    margin: 1em;
 }
 
 .flex {

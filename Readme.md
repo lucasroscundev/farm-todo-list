@@ -14,6 +14,16 @@ Docker, Git, GitHub (or your preferred tool, such as GitLab), Python.
 ## Tools I've used not in the tutorial
 Vite, Podman (alternative for Docker, changed half way), Shadcdn (and Tailwindcss)...
 
+## Creating root folder and installing FastAPI
+We begin the project by creating the folder that will containeverything, I call it root folder. It might have other names.The idea generally is to call it something you will remember, and that is easy. Examples are farm, farm_stack, farm_todo.
+
+After creating the folder, we should go inside it. Either cd or clicking inside it, if the terminal is not yet open. With a terminal open in the project's root folder, we will run the command:
+``` pip install "fastapi[standard]" ```
+
+The command can be: 
+``` pip install "fastapi[all]" ```
+This alternative version install all additional features.
+
 ## Deployment
 Not sure yet, but I'm leaning towards a combination of Vercel for the frontend, and for the backend, well...
 Maybe Supabase, railway, netlify, or even deploying everything with Vercel.

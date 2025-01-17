@@ -5,7 +5,7 @@
 }
 
 .ToDoList .item {
-  border: 1px solid lightray;
+  border: 1px solid lightgray;
   padding: 1em;
   margin: 1em;
   cursor: pointer;
@@ -18,5 +18,5 @@
 
 .ToDoList .checked .label {
   text-decoration: line-through;
-  color: lightray;
+  color: lightgray;
 }

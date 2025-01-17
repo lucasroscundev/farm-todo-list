@@ -11,31 +11,37 @@ import uvicorn
 
 from dal import ToDoDAL, ListSummary, ToDoList
 
+import urllib.parse
+from pymongo import MongoClient
+
 COLLECTION_NAME = "todo_lists"
-MONGODB_URI = os.environ["MONGODB_URI"]
+MONGODB_URI= os.environ["MONGODB_URI"]
 DEBUG = os.environ.get("DEBUG", "").strip().lower() in {"1", "true", "on", "yes"}
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup:
     client = AsyncIOMotorClient(MONGODB_URI)
     database = client.get_default_database()
-    
+
     # Ensure the database is available:
     pong = await database.command("ping")
     if int(pong["ok"]) != 1:
         raise Exception("Cluster connection is not okay!")
 
-        todo_lists = database.get_collection(COLLECTION_NAME)
-        app.todo_dal = ToDoDAL(todo_lists)
+    todo_lists = database.get_collection(COLLECTION_NAME)
+    app.todo_dal = ToDoDAL(todo_lists)
 
-        # Yield back to FastAPI Application:
-        yield
+    # Yield back to FastAPI Application:
+    yield
 
-        # Shutdown:
-        client.close()
+    # Shutdown:
+    client.close()
+
 
 app = FastAPI(lifespan=lifespan, debug=DEBUG)
+
 
 @app.get("/api/lists")
 async def get_all_lists() -> list[ListSummary]:
@@ -45,9 +51,11 @@ async def get_all_lists() -> list[ListSummary]:
 class NewList(BaseModel):
     name: str
 
+
 class NewListResponse(BaseModel):
     id: str
     name: str
+
 
 @app.post("/api/lists", status_code=status.HTTP_201_CREATED)
 async def create_todo_list(new_list: NewList) -> NewListResponse:
@@ -55,6 +63,7 @@ async def create_todo_list(new_list: NewList) -> NewListResponse:
         id=await app.todo_dal.create_todo_list(new_list.name),
         name=new_list.name,
     )
+
 
 @app.get("/api/lists/{list_id}")
 async def get_list(list_id: str) -> ToDoList:
@@ -74,6 +83,7 @@ class NewItem(BaseModel):
 class NewItemResponse(BaseModel):
     id: str
     label: str
+
 
 @app.post(
     "/api/lists/{list_id}/items/",
@@ -115,7 +125,7 @@ async def get_dummy() -> DummyResponse:
 
 def main(argv=sys.argv[1:]):
     try:
-        uvicorn.run("server.app", host="0.0.0.0", port=3001, reload=DEBUG)
+        uvicorn.run("server:app", host="0.0.0.0", port=3001, reload=DEBUG)
     except KeyboardInterrupt:
         pass
 
